@@ -1,0 +1,27 @@
+enkripsi dan dekripsi
+
+enkripsi = proses mengubah data menjadi sebuah chipertext(bentuk aneh)
+dekripsi = proses mengubah chipertext menjadi plaintext(bentuk yg sudah jadi)
+
+enkripsi :
+// kita mesti setup dulu sebelum kita mengenkripsi :
+// 1. algorithm = dia kayak standar apa yg ingin kita tetapkan ada byk dan itu harus sesuai dengan jumlah byte si key
+// 2. key = kita harus punya dulu key kita sendiri(bisa letak di file .env) yg berisi ya bebas(biasanya dari crypto.randomBytes(jumlah byte yg diigninkan)) dan ini tetap, bisa kita anggap sebagai "wadah
+// 3. Initialization Vector(iv) = sebuah randomBytes juga tapi ini tidak tetap jadi setiap kita mau enkripsi kita generate biar ada pembeda antara enkripsi 1 dan enkripsi 2
+// const chiper = dari ketiga itu akan menghasilkan "mesin" enkripsi (mesin enkripsi) = crypto.createCipheriv(algorithm,key,iv)
+
+- setelah itu kita gabungkan iv + mesin (maksud gabungkan dia, letak di depan bukan di campur seperti saat mau setup) enkripsi biar kita sendiri juga tau dan bisa di dekripsi juga karena saat dekripsi kita harus tau juga si iv nya
+- baru setelah itu hasil antara gabungkan iv + mesin enkripsi kita tambahkan objek apa yg mau kita enkripsi
+- lalu kita tambahkan authTag untuk beberapa algorithm(seperti GCM, CCM, OCB) dibagian akhir
+
+
+dekripsi :
+// sama seperti enkripsi, kita perlu setup juga dan ini hanya memisahkan nya :
+// 1. kita ambil dulu file nya, bisa pakai fs.readfile
+// 2. const iv = kita ambil Initialization Vector (iv) di awal dengan hasil dari mesin enkripsi
+// 3. const chipertext = baru kita ambil data yang sudah dienkripsi (biasanya ditengah)
+// 4. const authTag = kita ambil juga authTag dibagian akhir dari data yg sudah di enkripsi
+// 5. const decipher = baru pakai mesin dekripsi sama aja si kayak si mesin enkripsi pakai algorithm yang sama saat kita buat enkripsi,key di file .env dan iv yang sudah kita pisahkan = crypto.createDecipheriv(algorithm,key,iv)
+// 6. baru kita masukkan si chipertext ke mesin decipher
+// 7. jangan lupa untuk menambahkan att pada mesin decipher
+

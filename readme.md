@@ -6,33 +6,41 @@ Aplikasi catatan sederhana menggunakan **Node.js** hanya dengan module bawaan.
 
 ## 🚀 Fitur
 
-- ✍️ Tambah catatan lalu simpan ke file
-- 📖 Lihat semua catatan yang sudah disimpan
-- 🗑️ Hapus catatan tertentu
-- 👤 Tampilkan info user
-- 🔔 Logging otomatis dengan **events**
-- 🔒 Catatan rahasia dengan **crypto** (enkripsi & dekripsi)
+✍️ Tambah Catatan → bikin catatan baru, otomatis disimpan dalam file terenkripsi.
+📖 Lihat Catatan → pilih file tertentu untuk baca isi catatan (setelah didekripsi).
+📝 Edit Catatan → ubah isi catatan lama dengan enkripsi ulang.
+🗑️ Hapus Catatan → hapus catatan yang dipilih dari direktori notes.
+📂 Daftar Catatan → tampilkan semua catatan yang tersimpan.
+👤 Info Spek Device → lihat detail OS, CPU, RAM lewat module os.
+🔔 Logging Event → semua aksi dicatat dengan events.
+🔒 Enkripsi & Dekripsi → catatan aman karena diolah dengan AES-256-GCM.
 
 ---
 
 ## 📦 Module Node.js yang Dipakai
 
-- **fs** → untuk operasi file (buat, baca, hapus catatan)
-- **os** → untuk menampilkan info user
-- **readline** → untuk interaksi input/output di terminal
-- **path** → untuk path file yang aman & cross-platform
-- **events** → untuk trigger log setiap ada aksi (tambah/hapus/edit)
-- **crypto** → untuk enkripsi & dekripsi catatan rahasia
+fs → buat, baca, hapus file catatan
+os → tampilkan info device user
+readline → interaksi CLI dengan user
+path → bikin path file yang cross-platform
+events → trigger event tiap aksi catatan
+crypto → enkripsi & dekripsi catatan rahasia
+dotenv → ambil secret key dari .env
 
 ---
 
 ## 📂 Struktur Project
 
-mini-notes/
-│
-├── notes/ # folder penyimpanan catatan
-├── app.js # file utama aplikasi
-└── README.md # dokumentasi project
+arMiniNotesApp/
+│── node_modules/ # dependency project
+│── notes/ # tempat simpan semua catatan terenkripsi
+│── .env # simpan SECRET_KEY untuk crypto
+│── .gitignore # file yang diabaikan git
+│── app.mjs # main program (CLI app)
+│── package.json # metadata & dependency project
+│── package-lock.json # lock file npm
+│── readme.md # dokumentasi project
+│── remind.txt # catatan pembelajaran
 
 ---
 
@@ -40,8 +48,8 @@ mini-notes/
 
 1. Clone repo atau download project ini
    ```bash
-   git clone https://github.com/username/mini-notes.git
-   cd mini-notes
+   git clone https://github.com/ArveonTech/ArMiniNotesApp.git
+   cd ArMiniNotesApp
    ```
 
 node app.js
