@@ -8,6 +8,8 @@ import path from "path";
 import events from "events";
 import crypto from "crypto";
 import dotenv from "dotenv";
+import assert from "assert";
+import perf from "perf_hooks";
 
 // perlu modules untuk mengambil key dari file lain
 dotenv.config();
@@ -42,21 +44,30 @@ const inputNotes = readline.createInterface({
   output: process.stdout,
 });
 
+// fungsi menambahkan input user ke session.buffer
 const appendToBuffer = (ses, chunk) => {
+  assert.ok(ses, "session tidak boleh kosong");
   ses.buffer = ses.buffer ? ses.buffer + "\n" + chunk : chunk;
 };
 
+// fungsi untuk enkripsi dan menyimpan enkripsi
 const encryptAndSave = async (ses) => {
+  assert.ok(ses, "session tidak boleh kosong");
+  const start = perf.performance.now();
   const iv = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv("aes-256-gcm", key, iv);
   const cipherText = Buffer.concat([cipher.update(ses.buffer), cipher.final()]);
   const authTag = cipher.getAuthTag();
   const encrypted = Buffer.concat([iv, cipherText, authTag]);
   await fs.writeFile(ses.filePath, encrypted);
+  const end = perf.performance.now();
+  console.log(`Waktu proses encrypt: ${end - start} ms`);
 };
 
-// fungsi lihat catatan dan dekripsi catatan
+// fungsi untuk dekripsi dan mengembalikan dekripsi
 const decrypt = async (file) => {
+  assert.ok(file, "file yang ingin didekripsi harus ada");
+  const start = perf.performance.now();
   const dataFile = await fs.readFile(file);
   const iv = dataFile.slice(0, 16);
   const ciphertext = dataFile.slice(16, dataFile.length - 16);
@@ -64,6 +75,7 @@ const decrypt = async (file) => {
   const decipher = crypto.createDecipheriv("aes-256-gcm", key, iv);
   decipher.setAuthTag(authTag);
   const decrypted = decipher.update(ciphertext) + decipher.final();
+  console.log(`Waktu proses decrypt: ${end - start} ms`);
   return decrypted;
 };
 
@@ -74,13 +86,15 @@ const getListNotes = async () => {
   return listNotes.length > 0 ? listNotes : "tidak ada catatan";
 };
 
-// fungsi untuk menambah catatan dan enkripsi catatan
-const addNotes = async (chunk, ses) => {
+// fungsi saat masuk kondisi tambah
+const addNotes = async (ses, chunk) => {
+  assert.ok(ses, "session tidak boleh kosong");
   if (chunk.toString().toLowerCase() === "selesai") {
     await encryptAndSave(ses);
     console.info(`file : ${path.basename(ses.filePath)} berhasil ditambahkan`);
     session = null;
   } else if (chunk.toString().toLowerCase() === "batal") {
+    console.log(`anda batal menambah catatan ${ses.filePath}`);
     session = null;
     return;
   } else {
@@ -88,8 +102,9 @@ const addNotes = async (chunk, ses) => {
   }
 };
 
-// fungsi untuk mengedit catatan
-const editNotes = async (chunk, ses) => {
+// fungsi saat masuk kondisi edit
+const editNotes = async (ses, chunk) => {
+  assert.ok(ses, "session tidak boleh kosong");
   if (chunk.toString().toLowerCase() === "selesai") {
     const sessionCrypt = {
       filePath: ses.filePath,
@@ -99,24 +114,11 @@ const editNotes = async (chunk, ses) => {
     console.info(`file : ${path.basename(ses.filePath)} berhasil diedit`);
     session = null;
   } else if (chunk.toString().toLowerCase() === "batal") {
+    console.log(`anda batal mengedit catatan ${ses.filePath}`);
     session = null;
     return;
   } else {
     appendToBuffer(ses, chunk);
-  }
-};
-
-// fungsi untuk menghapus catatan
-const deleteNotes = async () => {
-  console.info(await getListNotes());
-  const nameNotesDel = await inputNotes.question("catatan yang ingin dihapus :");
-  const createFileDel = `${nameNotesDel}`;
-  const getDirDel = path.join(__dirname, `notes`, createFileDel);
-  try {
-    await fs.unlink(getDirDel);
-    console.info(`file : ${path.basename(getDirDel)} berhasil dihapus`);
-  } catch (e) {
-    console.info(e.message);
   }
 };
 
@@ -138,10 +140,10 @@ const specification = () => {
 log.on("note", (status, chunk, session) => {
   switch (status) {
     case "add":
-      addNotes(chunk, session);
+      addNotes(session, chunk);
       break;
     case "edit":
-      editNotes(chunk, session);
+      editNotes(session, chunk);
       break;
     case "delete":
       deleteNotes();
@@ -151,6 +153,99 @@ log.on("note", (status, chunk, session) => {
   }
 });
 
+// fungsi untuk membuat kondisi add = true
+const handleTambahCatatan = async () => {
+  console.info("--selesai : jika anda sudah selesai menambah catatan anda");
+  console.info("--batal : jika anda batal menambah catatan anda");
+  const nameNotesAdd = await inputNotes.question("beri nama catatan anda : ");
+  const createFileAdd = `log-${nameNotesAdd}.txt`;
+  const getDirAdd = path.join(__dirname, `notes`, createFileAdd);
+  session = {
+    mode: "add",
+    filePath: getDirAdd,
+    buffer: "",
+  };
+};
+
+// fungsi untuk menghapus catatan
+const handleHapusCatatan = async () => {
+  console.info(await getListNotes());
+  const nameNotesDel = await inputNotes.question("catatan yang ingin dihapus : ");
+  const createFileDel = `${nameNotesDel}`;
+  const getDirDel = path.join(__dirname, `notes`, createFileDel);
+  try {
+    await fs.unlink(getDirDel);
+    console.info(`file : ${path.basename(getDirDel)} berhasil dihapus`);
+  } catch (e) {
+    console.info(e.message);
+  }
+};
+
+// fungsi untuk membuat kondisi edit = true
+const handleEditCatatan = async () => {
+  const getStatusListEdit = await getListNotes();
+  if (getStatusListEdit === "tidak ada catatan") {
+    console.log("tidak ada catatan");
+    return;
+  }
+  console.log(getStatusListEdit);
+  console.info("--selesai : jika anda sudah selesai mengedit dengan catatan anda");
+  console.info("--batal : jika anda batal mengedit catatan anda");
+  const nameNotesEdit = await inputNotes.question("cari nama file catatan anda : ");
+  const createFileEdit = `${nameNotesEdit}`;
+  const getDirEdit = path.join(__dirname, `notes`, createFileEdit);
+  try {
+    await fs.access(getDirEdit);
+    session = {
+      mode: "edit",
+      filePath: getDirEdit,
+      buffer: await decrypt(getDirEdit),
+    };
+  } catch (e) {
+    e.code === "ENOENT" ? console.info("File tidak dapat ditemukan") : console.info(e.message);
+  }
+};
+
+// fungsi untuk melihat catatan
+const handleLihatCatatan = async () => {
+  const getStatusListRead = await getListNotes();
+  if (getStatusListRead === "tidak ada catatan") {
+    console.log("tidak ada catatan");
+    return;
+  }
+  console.log(getStatusListRead);
+  const nameReadNotes = await inputNotes.question("cari nama file catatan anda : ");
+  const getFileRead = `${path.join(__dirname, "notes", nameReadNotes)}`;
+  console.log(await decrypt(getFileRead));
+};
+
+// fungsi untuk melihat daftar catatan
+const handleDaftarCatatan = async () => {
+  console.info(await getListNotes());
+};
+
+// fugsi untuk keluar dari aplikasi
+const handleKeluar = () => {
+  inputNotes.close();
+  console.log("Anda telah keluar");
+};
+
+// fungsi untuk memberikan informasi device pengguna
+const handleSpek = () => {
+  console.info(specification());
+};
+
+// membuat list perintah dan action nya
+const commands = {
+  tambahcatatan: handleTambahCatatan,
+  hapuscatatan: handleHapusCatatan,
+  editcatatan: handleEditCatatan,
+  lihatcatatan: handleLihatCatatan,
+  daftarcatatan: handleDaftarCatatan,
+  keluar: handleKeluar,
+  spek: handleSpek,
+};
+
 // tangkap data setiap input dan tambahkan event handler
 inputNotes.addListener("line", async (data) => {
   if (session?.mode === "add") {
@@ -158,68 +253,11 @@ inputNotes.addListener("line", async (data) => {
   } else if (session?.mode === "edit") {
     log.emit("note", "edit", data, session);
   } else {
-    switch (data.toString().toLowerCase()) {
-      case "tambahcatatan":
-        console.info("--selesai : jika anda sudah selesai menambah catatan anda");
-        console.info("--batal : jika anda batal menambah catatan anda");
-        const nameNotesAdd = await inputNotes.question("beri nama catatan anda :");
-        const createFileAdd = `log-${nameNotesAdd}.txt`;
-        const getDirAdd = path.join(__dirname, `notes`, createFileAdd);
-        session = {
-          mode: "add",
-          filePath: getDirAdd,
-          buffer: "",
-        };
-        break;
-      case "hapuscatatan":
-        log.emit("note", "delete");
-        break;
-      case "editcatatan":
-        const getStatusListEdit = await getListNotes();
-        if (getStatusListEdit === "tidak ada catatan") {
-          console.log("tidak ada catatan");
-          return;
-        }
-        console.log(getStatusListEdit);
-        console.info("--selesai : jika anda sudah selesai mengedit dengan catatan anda");
-        console.info("--batal : jika anda batal mengedit catatan anda");
-        const nameNotesEdit = await inputNotes.question("cari nama file catatan anda :");
-        const createFileEdit = `${nameNotesEdit}`;
-        const getDirEdit = path.join(__dirname, `notes`, createFileEdit);
-        try {
-          await fs.access(getDirEdit);
-          session = {
-            mode: "edit",
-            filePath: getDirEdit,
-            buffer: await decrypt(getDirEdit),
-          };
-        } catch (e) {
-          e.code === "ENOENT" ? console.info("File tidak dapat ditemukan") : console.info(e.message);
-        }
-        break;
-      case "lihatcatatan":
-        const getStatusListRead = await getListNotes();
-        if (getStatusListRead === "tidak ada catatan") {
-          console.log("tidak ada catatan");
-          return;
-        }
-        console.log(getStatusListRead);
-        const nameReadNotes = await inputNotes.question("cari nama file catatan anda :");
-        const getFileRead = `${path.join(__dirname, "notes", nameReadNotes)}`;
-        console.log(await decrypt(getFileRead));
-        break;
-      case "daftarcatatan":
-        console.info(await getListNotes());
-        break;
-      case "keluar":
-        inputNotes.close();
-        console.log("Anda telah keluar");
-        break;
-      case "spek":
-        console.info(specification());
-        break;
-      default:
-        console.info("Perintah anda tidak dapat ditemukan");
+    const cmd = data.toString().toLowerCase();
+    if (commands[cmd]) {
+      await commands[cmd]();
+    } else {
+      console.info("Perintah tidak ditemukan");
     }
   }
 });

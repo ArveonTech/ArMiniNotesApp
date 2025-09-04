@@ -13,19 +13,21 @@ Aplikasi catatan sederhana menggunakan **Node.js** hanya dengan module bawaan.
 📂 Daftar Catatan → tampilkan semua catatan yang tersimpan.  
 👤 Info Spek Device → lihat detail OS, CPU, RAM lewat module os.  
 🔔 Logging Event → semua aksi dicatat dengan events.  
-🔒 Enkripsi & Dekripsi → catatan aman karena diolah dengan AES-256-GCM.  
+🔒 Enkripsi & Dekripsi → catatan aman karena diolah dengan AES-256-GCM.
 
 ---
 
 ## 📦 Module Node.js yang Dipakai
 
-fs → buat, baca, hapus file catatan  
-os → tampilkan info device user  
-readline → interaksi CLI dengan user  
-path → bikin path file yang cross-platform  
-events → trigger event tiap aksi catatan  
-crypto → enkripsi & dekripsi catatan rahasia  
-dotenv → ambil secret key dari .env  
+- **fs** → buat, baca, hapus file catatan  
+- **os** → tampilkan info device user  
+- **readline** → interaksi CLI dengan user  
+- **path** → bikin path file yang cross-platform  
+- **events** → trigger event tiap aksi catatan  
+- **crypto** → enkripsi & dekripsi catatan rahasia  
+- **dotenv** → ambil secret key dari .env  
+- **assert** → validasi parameter agar function tidak jalan dengan nilai undi/null  
+- **perf_hooks** → cek performa waktu eksekusi (enkripsi, dekripsi, dll.)  
 
 ---
 
@@ -40,7 +42,7 @@ arMiniNotesApp/
 │── package.json # metadata & dependency project  
 │── package-lock.json # lock file npm  
 │── readme.md # dokumentasi project  
-│── remind.txt # catatan pembelajaran  
+│── remind.txt # catatan pembelajaran
 
 ---
 
