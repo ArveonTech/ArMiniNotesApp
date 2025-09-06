@@ -6,30 +6,29 @@ Aplikasi catatan sederhana menggunakan **Node.js** hanya dengan module bawaan.
 
 ## 🚀 Fitur
 
-✍️ Tambah Catatan → bikin catatan baru, otomatis disimpan dalam file terenkripsi.  
-📖 Lihat Catatan → pilih file tertentu untuk baca isi catatan (setelah didekripsi).  
-📝 Edit Catatan → ubah isi catatan lama dengan enkripsi ulang.  
-🗑️ Hapus Catatan → hapus catatan yang dipilih dari direktori notes.  
-📂 Daftar Catatan → tampilkan semua catatan yang tersimpan.  
-👤 Info Spek Device → lihat detail OS, CPU, RAM lewat module os.  
-🔔 Logging Event → semua aksi dicatat dengan events.  
+✍️ Tambah Catatan → bikin catatan baru, otomatis disimpan dalam file terenkripsi.
+📖 Lihat Catatan → pilih file tertentu untuk baca isi catatan (setelah didekripsi).
+📝 Edit Catatan → ubah isi catatan lama dengan enkripsi ulang.
+🗑️ Hapus Catatan → hapus catatan yang dipilih dari direktori notes.
+📂 Daftar Catatan → tampilkan semua catatan yang tersimpan.
+👤 Info Spek Device → lihat detail OS, CPU, RAM lewat module os.
+🔔 Logging Event → semua aksi dicatat dengan events.
 🔒 Enkripsi & Dekripsi → catatan aman karena diolah dengan AES-256-GCM.
-
----
+🗜️ Compress & Decompress → simpan catatan lebih ringkas pakai gzip, bisa diekstrak lagi kalau dibuka.
 
 ## 📦 Module Node.js yang Dipakai
 
-- **fs** → buat, baca, hapus file catatan  
-- **os** → tampilkan info device user  
-- **readline** → interaksi CLI dengan user  
-- **path** → bikin path file yang cross-platform  
-- **events** → trigger event tiap aksi catatan  
-- **crypto** → enkripsi & dekripsi catatan rahasia  
-- **dotenv** → ambil secret key dari .env  
-- **assert** → validasi parameter agar function tidak jalan dengan nilai undi/null  
-- **perf_hooks** → cek performa waktu eksekusi (enkripsi, dekripsi, dll.)  
-
----
+- **fs** → buat, baca, hapus file catatan
+- **os** → tampilkan info device user
+- **readline** → interaksi CLI dengan user
+- **path** → bikin path file yang cross-platform
+- **events** → trigger event tiap aksi catatan
+- **crypto** → enkripsi & dekripsi catatan rahasia
+- **dotenv** → ambil secret key dari .env
+- **assert** → validasi parameter agar function tidak jalan dengan nilai undi/null
+- **perf_hooks** → cek performa waktu eksekusi (enkripsi, dekripsi, dll.)
+- **zlib** → compress & decompress catatan dengan gzip
+- **stream** → olah data file secara bertahap (pipeline read/write)
 
 ## 📂 Struktur Project
 
