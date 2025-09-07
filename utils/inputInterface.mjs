@@ -1,3 +1,4 @@
+// import module
 import readline from "readline/promises";
 
 // ambil setiap output dari input terminal
