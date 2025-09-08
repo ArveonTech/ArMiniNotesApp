@@ -19,20 +19,20 @@ const to = (promise) => promise.then((res) => [null, res]).catch((error) => [err
 // fungsi untuk melihat catatan
 const handleReadNotes = async () => {
   const [errorListNotes, dataListNotes] = await to(handleListNotes());
-  if (errorListNotes) return console.log(`terjadi error : ${errorListNotes}`);
+  if (errorListNotes) return console.info(`terjadi error : ${errorListNotes}`);
 
-  console.log(dataListNotes);
+  console.info(dataListNotes);
 
   const [errorReadNotes, nameReadNotes] = await to(inputNotes.question("cari nama file catatan anda : "));
-  if (errorReadNotes) return console.log(`terjadi error : ${errorReadNotes}`);
+  if (errorReadNotes) return console.info(`terjadi error : ${errorReadNotes}`);
 
   const getFileRead = `${path.join(__dirname, `..`, "notes", nameReadNotes)}`;
   try {
     await fsp.access(getFileRead);
     const [errorDecompress, fileDecompress] = await to(handleDecrypt(getFileRead));
-    if (errorDecompress) return console.log(`terjadi error : ${errorDecompress}`);
+    if (errorDecompress) return console.info(`terjadi error : ${errorDecompress}`);
 
-    console.log(fileDecompress.toString("utf-8"));
+    console.info(fileDecompress.toString("utf-8"));
   } catch (e) {
     e.code === "ENOENT" ? console.info("File tidak dapat ditemukan") : console.info(e.message);
   }

@@ -4,7 +4,7 @@ import inputNotes from "./inputInterface.mjs";
 // fungsi untuk keluar dari aplikasi
 const handleClose = () => {
   inputNotes.close();
-  console.log("Anda telah keluar");
+  console.info("Anda telah keluar");
 };
 
 export default handleClose;

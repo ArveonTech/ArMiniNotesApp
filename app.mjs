@@ -13,6 +13,7 @@ import handleReadNotes from "./utils/handleReadNotes.mjs";
 import handleEditNotes from "./utils/handleEditNotes.mjs";
 import handleClose from "./utils/handleClose.mjs";
 import handleSpek from "./utils/handleSpek.mjs";
+import handleRenameFile from "./utils/handleRenameFile.mjs";
 
 // buat event custom
 const log = new events.EventEmitter();
@@ -28,10 +29,11 @@ console.info("Info :");
 console.info(`--tambahCatatan : untuk menambah catatan anda`);
 console.info(`--hapusCatatan : untuk menghapus catatan anda`);
 console.info(`--editCatatan : untuk mengedit catatan anda`);
-console.info(`--daftarCatatan : untuk menampilkan list catatan anda`);
+console.info(`--ubahNamaCatatan : untuk mengganti nama catatan anda`);
 console.info(`--lihatCatatan : untuk menampilkan catatan anda`);
-console.info(`--keluar : untuk keluar aplikasi`);
-console.info(`--spek : untuk spesifikasi device anda \n`);
+console.info(`--daftarCatatan : untuk menampilkan list catatan anda`);
+console.info(`--spek : untuk spesifikasi device anda`);
+console.info(`--keluar : untuk keluar aplikasi \n`);
 
 // fungsi menambahkan input user ke session.buffer
 const appendToBuffer = (ses, chunk) => {
@@ -45,11 +47,11 @@ const addNotes = async (ses, chunk) => {
 
   if (chunk.toString().toLowerCase() === "selesai") {
     const [errorAddNotes, dataAddNotes] = await to(handleEncryptAndSave(ses));
-    if (errorAddNotes) return console.log(`terjadi error : ${errorAddNotes}`);
+    if (errorAddNotes) return console.info(`terjadi error : ${errorAddNotes}`);
     console.info(`file : ${path.basename(ses.filePath)} berhasil ditambahkan`);
     session = null;
   } else if (chunk.toString().toLowerCase() === "batal") {
-    console.log(`anda batal menambah catatan ${ses.filePath}`);
+    console.info(`anda batal menambah catatan ${ses.filePath}`);
     session = null;
     return;
   } else {
@@ -67,11 +69,11 @@ const editNotes = async (ses, chunk) => {
       buffer: ses.buffer,
     };
     const [errorEditNotes, dataEditNotes] = await to(handleEncryptAndSave(sessionCrypt));
-    if (errorEditNotes) return console.log(`terjadi error : ${errorEditNotes}`);
+    if (errorEditNotes) return console.info(`terjadi error : ${errorEditNotes}`);
     console.info(`file : ${path.basename(ses.filePath)} berhasil diedit`);
     session = null;
   } else if (chunk.toString().toLowerCase() === "batal") {
-    console.log(`anda batal mengedit catatan ${ses.filePath}`);
+    console.info(`anda batal mengedit catatan ${ses.filePath}`);
     session = null;
     return;
   } else {
@@ -111,12 +113,13 @@ const commands = {
   lihatcatatan: handleReadNotes,
   daftarcatatan: async () => {
     const [errorListNotes, dataListNotes] = await to(handleListNotes());
-    if (errorListNotes) return console.log(`terjadi error : ${errorListNotes}`);
+    if (errorListNotes) return console.info(`terjadi error : ${errorListNotes}`);
 
-    console.log(dataListNotes);
+    console.info(dataListNotes);
   },
-  keluar: handleClose,
+  ubahnamacatatan: handleRenameFile,
   spek: handleSpek,
+  keluar: handleClose,
 };
 
 inputNotes.removeAllListeners("line");

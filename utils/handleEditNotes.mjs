@@ -19,15 +19,15 @@ const to = (promise) => promise.then((res) => [null, res]).catch((error) => [err
 // fungsi untuk membuat kondisi edit = true
 const handleEditNotes = async () => {
   const [errorListNotes, dataListNotes] = await to(handleListNotes());
-  if (errorListNotes) return console.log(`terjadi error : ${errorListNotes}`);
+  if (errorListNotes) return console.info(`terjadi error : ${errorListNotes}`);
 
-  console.log(dataListNotes);
+  console.info(dataListNotes);
 
   console.info("--selesai : jika anda sudah selesai mengedit dengan catatan anda");
   console.info("--batal : jika anda batal mengedit catatan anda");
 
   const [errorNotesEdit, nameNotesEdit] = await to(inputNotes.question("cari nama file catatan anda : "));
-  if (errorNotesEdit) return console.log(`terjadi error : ${errorNotesEdit}`);
+  if (errorNotesEdit) return console.info(`terjadi error : ${errorNotesEdit}`);
 
   const getDirEdit = path.join(__dirname, `..`, `notes`, nameNotesEdit);
   try {
@@ -38,8 +38,8 @@ const handleEditNotes = async () => {
       buffer: (await handleDecrypt(getDirEdit)).toString("utf-8"),
     };
     return session;
-  } catch (e) {
-    e.code === "ENOENT" ? console.info("File tidak dapat ditemukan") : console.info(e.message);
+  } catch (error) {
+    error.code === "ENOENT" ? console.info("File tidak dapat ditemukan") : console.info(error.message);
   }
 };
 

@@ -15,18 +15,18 @@ const to = (promise) => promise.then((res) => [null, res]).catch((error) => [err
 // fungsi untuk menghapus catatan
 const handleDeleteNotes = async () => {
   const [errorListNotes, dataListNotes] = await to(handleListNotes());
-  if (errorListNotes) return console.log(`terjadi error : ${errorListNotes}`);
+  if (errorListNotes) return console.info(`terjadi error : ${errorListNotes}`);
 
   console.info(await dataListNotes);
 
   const [errorQuestion, nameNotesDel] = await to(inputNotes.question("catatan yang ingin dihapus : "));
-  if (errorQuestion) return console.log(`terjadi error : ${errorQuestion}`);
+  if (errorQuestion) return console.info(`terjadi error : ${errorQuestion}`);
 
   const createFileDel = `${nameNotesDel}`;
   const getDirDel = path.join(__dirname, `..`, `notes`, createFileDel);
 
   const [errorDelete, _] = await to(fsp.unlink(getDirDel));
-  if (errorDelete) return console.log(`terjadi error : ${errorDelete}`);
+  if (errorDelete) return console.info(`terjadi error : ${errorDelete}`);
 
   console.info(`file : ${path.basename(getDirDel)} berhasil dihapus`);
 };

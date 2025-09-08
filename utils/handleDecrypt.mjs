@@ -21,7 +21,8 @@ const key = Buffer.from(process.env.SECRET_KEY, "hex");
 const handleDecrypt = async (file) => {
   assert.ok(file, "file yang ingin didekripsi harus ada");
   const [errorReadFile, readFile] = await to(fsp.readFile(file));
-  if (errorReadFile) return console.log(`gagal membaca file : ${errorReadFile}`);
+  if (errorReadFile) return console.info(`gagal membaca file : ${errorReadFile}`);
+  
   const fileDecompress = zlib.gunzipSync(readFile);
 
   return new Promise(async (resolve, reject) => {
@@ -29,7 +30,7 @@ const handleDecrypt = async (file) => {
     const chunkStream = [];
 
     const streamData = stream.Readable.from(fileDecompress);
-    
+
     streamData.on("data", (chunk) => chunkStream.push(chunk));
     streamData.on("end", () => {
       try {
@@ -41,7 +42,7 @@ const handleDecrypt = async (file) => {
         decipher.setAuthTag(authTag);
         const decrypted = Buffer.concat([decipher.update(ciphertext), decipher.final()]);
         const end = perf.performance.now();
-        console.log(`Waktu proses decrypt: ${end - start} ms`);
+        console.info(`Waktu proses decrypt: ${end - start} ms`);
         resolve(decrypted);
       } catch (err) {
         reject(err);

@@ -30,27 +30,26 @@ const handleEncryptAndSave = async (ses) => {
   const encrypted = Buffer.concat([iv, cipherText, authTag]);
 
   const [errorWriteFile, _] = await to(fsp.writeFile(ses.filePath, encrypted));
-  if (errorWriteFile) return console.log(`gagal menambah file : ${errorWriteFile}`);
+  if (errorWriteFile) return console.info(`gagal menambah file : ${errorWriteFile}`);
 
   const [errorReadFile, dataReadFile] = await to(fsp.readFile(ses.filePath));
-  if (errorReadFile) return console.log(`gagal membaca file : ${errorReadFile}`);
+  if (errorReadFile) return console.info(`gagal membaca file : ${errorReadFile}`);
 
   const dataCompress = zlib.gzipSync(dataReadFile);
-  console.log(ses.filePath);
 
   if (path.basename(ses.filePath).endsWith(".txt.gz")) {
     const [errorCompressFile, _] = await to(fsp.writeFile(`${ses.filePath}`, dataCompress));
-    if (errorCompressFile) return console.log(`gagal compress file : ${errorCompressFile}`);
+    if (errorCompressFile) return console.info(`gagal compress file : ${errorCompressFile}`);
   } else {
     const [errorCompressFile, _] = await to(fsp.writeFile(`${ses.filePath}.gz`, dataCompress));
-    if (errorCompressFile) return console.log(`gagal compress file : ${errorCompressFile}`);
+    if (errorCompressFile) return console.info(`gagal compress file : ${errorCompressFile}`);
 
     const [errorDelete, dataDelete] = await to(fsp.unlink(ses.filePath));
-    if (errorDelete) return console.log(`gagal menghapus file : ${errorDelete}`);
+    if (errorDelete) return console.info(`gagal menghapus file : ${errorDelete}`);
   }
 
   const end = perf.performance.now();
-  console.log(`Waktu proses encrypt: ${end - start} ms`);
+  console.info(`Waktu proses encrypt: ${end - start} ms`);
 };
 
 export default handleEncryptAndSave;

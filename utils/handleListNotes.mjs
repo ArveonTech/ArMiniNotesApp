@@ -14,7 +14,7 @@ const handleListNotes = async () => {
   const getDirList = path.join(__dirname, `..`, `notes`);
 
   let [errorListNotes, listNotes] = await to(fsp.readdir(getDirList));
-  if (errorListNotes) return console.log(`terjadi error : ${errorListNotes}`);
+  if (errorListNotes) return console.info(`terjadi error : ${errorListNotes}`);
 
   const list = listNotes.length > 0 ? listNotes : "tidak ada catatan";
   return list;
