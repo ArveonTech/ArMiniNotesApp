@@ -4,6 +4,8 @@ Aplikasi catatan sederhana menggunakan **Node.js** hanya dengan module bawaan.
 
 ---
 
+☁️ Bahasa Indonesia
+
 ## 🚀 Fitur
 
 ✍️ Tambah Catatan → bikin catatan baru, otomatis disimpan dalam file terenkripsi.  
@@ -15,7 +17,7 @@ Aplikasi catatan sederhana menggunakan **Node.js** hanya dengan module bawaan.
 👤 Info Spek Device → lihat detail OS, CPU, RAM lewat module os.  
 🔔 Logging Event → semua aksi dicatat dengan events.  
 🔒 Enkripsi & Dekripsi → catatan aman karena diolah dengan AES-256-GCM.  
-🗜️ Compress & Decompress → simpan catatan lebih ringkas pakai gzip, bisa diekstrak lagi kalau dibuka.  
+🗜️ Compress & Decompress → simpan catatan lebih ringkas pakai gzip, bisa diekstrak lagi kalau dibuka.
 
 ## 📦 Module Node.js yang Dipakai
 
@@ -31,28 +33,57 @@ Aplikasi catatan sederhana menggunakan **Node.js** hanya dengan module bawaan.
 - **zlib** → compress & decompress catatan dengan gzip
 - **stream** → olah data file secara bertahap (pipeline read/write)
 
-## 📂 Struktur Project
+🌐 English Version
 
-arMiniNotesApp/  
-│── node_modules/ # dependency project  
-│── notes/ # tempat simpan semua catatan terenkripsi  
-|── utils/ # tempat fungsi semua fitur  
-│── .env # simpan SECRET_KEY untuk crypto  
-│── .gitignore # file yang diabaikan git  
+## 🚀 Features
+
+✍️ Add Note → create a new note, automatically saved in an encrypted file.  
+🗑️ Delete Note → remove the selected note from the notes directory.  
+📝 Edit Note → modify an existing note with re-encryption.  
+✏️ Rename Note → change a note’s file name without losing its content.  
+📖 View Note → select a file to read its content (after decryption).  
+📂 List Notes → display all saved notes.  
+👤 Device Info → view OS, CPU, RAM details via the os module.  
+🔔 Event Logging → track all actions using events.  
+🔒 Encrypt & Decrypt → notes are secured with AES-256-GCM.  
+🗜️ Compress & Decompress → save notes compactly with gzip, extractable when opened.
+
+## 📦 Node.js Modules Used
+
+fs → create, read, and delete note files  
+os → display user device info  
+readline → CLI interaction with the user  
+path → generate cross-platform file paths  
+events → trigger events for note actions  
+crypto → encrypt & decrypt secret notes  
+dotenv → load SECRET_KEY from .env  
+assert → validate parameters to prevent functions from running with invalid/null values  
+perf_hooks → check execution performance (encryption, decryption, etc.)  
+zlib → compress & decompress notes using gzip  
+stream → process file data in chunks (read/write pipeline)
+
+## 📂 Project Structure
+
+arMiniNotesApp/
+│── node_modules/ # project dependencies  
+│── notes/ # stores all encrypted notes  
+│── utils/ # functions for all features  
+│── .env # stores SECRET_KEY for crypto  
+│── .gitignore # git ignored files  
 │── app.mjs # main program (CLI app)  
-│── package.json # metadata & dependency project  
-│── package-lock.json # lock file npm  
-│── readme.md # dokumentasi project  
-│── remind.txt # catatan pembelajaran
+│── package.json # project metadata & dependencies  
+│── package-lock.json # npm lock file  
+│── readme.md # project documentation  
+│── remind.txt # learning notes
 
 ---
 
-## ⚙️ Cara Menjalankan
+## ⚙️ How to Run
 
-1. Clone repo atau download project ini
+1. Clone the repo or download this project
    ```bash
    git clone https://github.com/ArveonTech/ArMiniNotesApp.git
    cd ArMiniNotesApp
    ```
 
-node app.js
+2. node app.js
