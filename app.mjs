@@ -117,7 +117,7 @@ const commands = {
 
     console.info(dataListNotes);
   },
-  ubahnamacatatan: handleRenameFile,
+  ubahNamaCatatan: handleRenameFile,
   spek: handleSpek,
   keluar: handleClose,
 };

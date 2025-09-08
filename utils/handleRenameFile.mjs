@@ -5,12 +5,10 @@ import fsp from "fs/promises";
 
 // import component
 import inputNotes from "./inputInterface.mjs";
-import handleDecrypt from "./handleDecrypt.mjs";
 import handleListNotes from "./handleListNotes.mjs";
 
-// CommonJS: Node kasih __dirname & __filename otomatis.
-// ESM: harus bikin sendiri → ambil import.meta.url → convert → baru jadi mirip yang CommonJS.
-const __filename = url.fileURLToPath(import.meta.url); // ambil lokasi file yang lagi berjalan(format nya file://),lalu kita ubah ke absolute ./file/
+// ambil __filename dan __dirname
+const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // buat function try and catch
@@ -21,6 +19,7 @@ const getDir = (file) => {
   return pathDir;
 };
 
+// fungsi untuk ubah nama file
 const handleRenameFile = async () => {
   const [errorListNotes, dataListNotes] = await to(handleListNotes());
   if (errorListNotes) return console.info(`terjadi error : ${errorListNotes}`);

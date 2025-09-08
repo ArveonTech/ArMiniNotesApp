@@ -3,7 +3,8 @@ import fsp from "fs/promises";
 import path from "path";
 import url from "url";
 
-const __filename = url.fileURLToPath(import.meta.url); // ambil lokasi file yang lagi berjalan(format nya file://),lalu kita ubah ke absolute ./file/
+// ambil __filename dan __dirname
+const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // buat function try and catch

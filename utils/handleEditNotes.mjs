@@ -8,9 +8,8 @@ import handleListNotes from "./handleListNotes.mjs";
 import inputNotes from "./inputInterface.mjs";
 import handleDecrypt from "./handleDecrypt.mjs";
 
-// CommonJS: Node kasih __dirname & __filename otomatis.
-// ESM: harus bikin sendiri → ambil import.meta.url → convert → baru jadi mirip yang CommonJS.
-const __filename = url.fileURLToPath(import.meta.url); // ambil lokasi file yang lagi berjalan(format nya file://),lalu kita ubah ke absolute ./file/
+// ambil __filename dan __dirname
+const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // buat function try and catch

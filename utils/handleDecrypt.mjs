@@ -8,7 +8,7 @@ import dotenv from "dotenv";
 import process from "process";
 import crypto from "crypto";
 
-// perlu modules untuk mengambil key dari file lain,configurasi kan
+// perlu modules untuk mengambil key dari file lain dan diconfigurasi kan
 dotenv.config();
 
 // buat function try and catch

@@ -1,4 +1,4 @@
-enkripsi dan dekripsi
+A. enkripsi dan dekripsi
 
 enkripsi = proses mengubah data menjadi sebuah chipertext(bentuk aneh)
 dekripsi = proses mengubah chipertext menjadi plaintext(bentuk yg sudah jadi)
@@ -25,3 +25,10 @@ dekripsi :
 // 6. baru kita masukkan si chipertext ke mesin decipher
 // 7. jangan lupa untuk menambahkan att pada mesin decipher
 
+B url.
+
+// CommonJS: Node kasih __dirname & __filename otomatis.CommonJS(require = "modules")
+// ESM: harus bikin sendiri → ambil import.meta.url → convert → baru jadi mirip yang CommonJS.
+
+const __filename = url.fileURLToPath(import.meta.url); // ambil lokasi file yang lagi berjalan(format nya file://),lalu kita ubah ke absolute ./file/
+const __dirname = path.dirname(__filename);
