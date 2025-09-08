@@ -51,7 +51,7 @@ const addNotes = async (ses, chunk) => {
     console.info(`file : ${path.basename(ses.filePath)} berhasil ditambahkan`);
     session = null;
   } else if (chunk.toString().toLowerCase() === "batal") {
-    console.info(`anda batal menambah catatan ${ses.filePath}`);
+    console.info(`anda batal menambah catatan ${path.basename(ses.filePath)}`);
     session = null;
     return;
   } else {
@@ -73,7 +73,7 @@ const editNotes = async (ses, chunk) => {
     console.info(`file : ${path.basename(ses.filePath)} berhasil diedit`);
     session = null;
   } else if (chunk.toString().toLowerCase() === "batal") {
-    console.info(`anda batal mengedit catatan ${ses.filePath}`);
+    console.info(`anda batal mengedit catatan ${path.basename(ses.filePath)}`);
     session = null;
     return;
   } else {
