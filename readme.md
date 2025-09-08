@@ -36,6 +36,7 @@ Aplikasi catatan sederhana menggunakan **Node.js** hanya dengan module bawaan.
 arMiniNotesApp/  
 │── node_modules/ # dependency project  
 │── notes/ # tempat simpan semua catatan terenkripsi  
+|── utils/ # tempat fungsi semua fitur  
 │── .env # simpan SECRET_KEY untuk crypto  
 │── .gitignore # file yang diabaikan git  
 │── app.mjs # main program (CLI app)  
