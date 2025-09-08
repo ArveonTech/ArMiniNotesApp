@@ -6,15 +6,16 @@ Aplikasi catatan sederhana menggunakan **Node.js** hanya dengan module bawaan.
 
 ## 🚀 Fitur
 
-✍️ Tambah Catatan → bikin catatan baru, otomatis disimpan dalam file terenkripsi.
-📖 Lihat Catatan → pilih file tertentu untuk baca isi catatan (setelah didekripsi).
-📝 Edit Catatan → ubah isi catatan lama dengan enkripsi ulang.
-🗑️ Hapus Catatan → hapus catatan yang dipilih dari direktori notes.
-📂 Daftar Catatan → tampilkan semua catatan yang tersimpan.
-👤 Info Spek Device → lihat detail OS, CPU, RAM lewat module os.
-🔔 Logging Event → semua aksi dicatat dengan events.
-🔒 Enkripsi & Dekripsi → catatan aman karena diolah dengan AES-256-GCM.
-🗜️ Compress & Decompress → simpan catatan lebih ringkas pakai gzip, bisa diekstrak lagi kalau dibuka.
+✍️ Tambah Catatan → bikin catatan baru, otomatis disimpan dalam file terenkripsi.  
+🗑️ Hapus Catatan → hapus catatan yang dipilih dari direktori notes.  
+📝 Edit Catatan → ubah isi catatan lama dengan enkripsi ulang.  
+✏️ Rename Catatan → ubah nama file catatan lama menjadi nama baru tanpa kehilangan isinya.  
+📖 Lihat Catatan → pilih file tertentu untuk baca isi catatan (setelah didekripsi).  
+📂 Daftar Catatan → tampilkan semua catatan yang tersimpan.  
+👤 Info Spek Device → lihat detail OS, CPU, RAM lewat module os.  
+🔔 Logging Event → semua aksi dicatat dengan events.  
+🔒 Enkripsi & Dekripsi → catatan aman karena diolah dengan AES-256-GCM.  
+🗜️ Compress & Decompress → simpan catatan lebih ringkas pakai gzip, bisa diekstrak lagi kalau dibuka.  
 
 ## 📦 Module Node.js yang Dipakai
 
